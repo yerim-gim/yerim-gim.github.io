@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yerim Gim — writing between musicology &amp; technology</title>
-<meta name="description" content="Personal site of Yerim Gim. Essays, works, and CV — between musicology and technology." />
+<title>Yerim Gim — musicology &amp; technology</title>
+<meta name="description" content="Yerim Gim (김예림) — musicologist working on neurofeedback music, brain–computer music interfaces, and AI music. Writing, works, and CV." />
 
 <!-- ──────────────────────────────────────────────
-  사용법 요약
-  · 이름/소개/이메일: 본문에서 "이도윤" 등 자리표시 텍스트를 검색해 바꾸세요.
-  · 글 추가: <section id="writing"> 안의 목록에 <li> 하나,
+  편집 안내
+  · 텍스트를 바꾸려면 이 파일에서 해당 문구를 찾아 수정하세요.
+  · 글 추가: <ul class="essay-list"> 안에 <li> 하나,
     그리고 아래 <article class="essay"> 블록 하나를 복사해 채우면 됩니다.
-  · 배포: 이 파일 하나를 GitHub Pages / Netlify에 올리면 끝.
+  · 배포: GitHub 저장소 yerim-gim.github.io 에 이 파일을 index.html 로 올리면 끝.
 ─────────────────────────────────────────────── -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +29,7 @@
     --serif:"Gowun Batang","Noto Serif KR",serif;
     --display:"Abril Fatface","Gowun Batang",serif;
     --mono:"IBM Plex Mono",ui-monospace,monospace;
-    --measure:44rem;
+    --measure:46rem;
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -76,8 +76,12 @@
   nav.main{display:flex;gap:1.4rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em}
   nav.main a{color:var(--muted)}
   nav.main a:hover{color:var(--accent)}
+  nav.main .ni{
+    font-size:.9em;margin-right:.15em;
+    -webkit-text-fill-color:initial;filter:grayscale(.15);
+  }
 
-  /* ── 히어로: 오선 위의 파형 ─────────────── */
+  /* ── 히어로: 오선 위의 뇌파/파형 ─────────── */
   .hero{
     max-width:56rem;margin:0 auto;
     padding:clamp(4rem,10vh,7rem) 1.5rem 3.5rem;
@@ -103,9 +107,8 @@
     font-family:var(--mono);font-size:.7rem;color:var(--muted);
     margin-top:.6rem;letter-spacing:.06em;
   }
- 
 
-  /* ── 섹션 공통: 오선 프래그먼트 구분자 ──── */
+  /* ── 섹션 공통 ───────────────────────────── */
   main{max-width:var(--measure);margin:0 auto;padding:0 1.5rem 6rem}
   section{padding-top:4.5rem}
   .staffmark{
@@ -119,7 +122,7 @@
   }
   h2{
     font-family:var(--display);font-weight:400;
-    font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.2;margin-bottom:1.6rem;
+    font-size:clamp(1.8rem,3.6vw,2.5rem);line-height:1.2;margin-bottom:1.6rem;
   }
   section p + p{margin-top:1.1rem}
 
@@ -127,6 +130,15 @@
   #bio .note{
     margin-top:1.6rem;padding-left:1.1rem;border-left:2px solid var(--accent);
     color:var(--muted);font-size:.95rem;
+  }
+  .focus-list{
+    list-style:none;margin-top:1.8rem;
+    display:flex;flex-wrap:wrap;gap:.5rem;
+  }
+  .focus-list li{
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;
+    border:1px solid var(--line);border-radius:999px;
+    padding:.35rem .85rem;color:var(--muted);
   }
 
   /* ── 글 목록 ─────────────────────────────── */
@@ -168,10 +180,10 @@
     line-height:.82;padding-right:.12em;color:var(--accent);
   }
 
-  /* ── 작업 ────────────────────────────────── */
+  /* ── 작업(연구 주제) ─────────────────────── */
   .works{list-style:none}
   .works li{
-    display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;
+    display:grid;grid-template-columns:8rem 1fr;gap:1rem;
     padding:1.2rem 0;border-bottom:1px solid var(--line);
   }
   .works .kind{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.06em}
@@ -182,25 +194,26 @@
   @media (max-width:560px){ .works li{grid-template-columns:1fr;gap:.3rem} }
 
   /* ── CV ─────────────────────────────────── */
-  .cv-block{margin-bottom:2.2rem}
+  .cv-block{margin-bottom:2.4rem}
   .cv-block h3{
     font-family:var(--mono);font-size:.74rem;font-weight:500;
-    letter-spacing:.12em;color:var(--muted);text-transform:uppercase;
-    margin-bottom:.9rem;
+    letter-spacing:.12em;color:var(--accent);text-transform:uppercase;
+    margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--line);
   }
   .cv-item{
-    display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;
-    padding:.45rem 0;font-size:.98rem;
+    display:grid;grid-template-columns:8rem 1fr;gap:1rem;
+    padding:.5rem 0;font-size:.97rem;line-height:1.6;
   }
-  .cv-item .yr{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
-  .cv-item .what em{font-style:normal;color:var(--muted);font-size:.9rem}
+  .cv-item .yr{font-family:var(--mono);font-size:.74rem;color:var(--muted);padding-top:.15rem}
+  .cv-item .what em{font-style:italic;color:var(--muted);font-size:.92rem}
+  .cv-item .what .sub{display:block;color:var(--muted);font-size:.88rem}
   .cv-dl{
-    display:inline-block;margin-top:.6rem;
+    display:inline-block;margin-top:.4rem;
     font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;
     border:1px solid var(--ink);padding:.5rem .9rem;border-radius:2px;
   }
   .cv-dl:hover{background:var(--ink);color:var(--paper)}
-  @media (max-width:560px){ .cv-item{grid-template-columns:4.5rem 1fr} }
+  @media (max-width:560px){ .cv-item{grid-template-columns:5rem 1fr} }
 
   /* ── 푸터 ────────────────────────────────── */
   footer{
@@ -220,12 +233,12 @@
 <a class="skip" href="#bio">Skip to content</a>
 
 <header class="top">
-  <a class="brand" href="#top">Gim. Yerim <em>·</em> 김예림</a>
+  <a class="brand" href="#top">Yerim Gim <em>·</em> 김예림</a>
   <nav class="main" aria-label="Main menu">
     <a href="#bio"><span class="ni" aria-hidden="true">🐸</span> About</a>
-<a href="#writing"><span class="ni" aria-hidden="true">✏️</span> Writing</a>
-<a href="#works"><span class="ni" aria-hidden="true">🎵</span> Research</a>
-<a href="#cv">CV</a>
+    <a href="#writing"><span class="ni" aria-hidden="true">✏️</span> Writing</a>
+    <a href="#works"><span class="ni" aria-hidden="true">🎵</span> Research</a>
+    <a href="#cv">CV</a>
   </nav>
 </header>
 
@@ -234,13 +247,13 @@
   <p class="hello">musicology × technology — seoul</p>
   <h1>Where brainwaves<br /><span class="latin">become music.</span></h1>
   <p class="tagline">
-    Yerim Gim (김예림) is a musicologist working on neurofeedback music, 
-    brain-computer music interfaces, and - looking ahead - AI music.
+    Yerim Gim (김예림) is a musicologist working on neurofeedback music,
+    brain–computer music interfaces, and — looking ahead — AI music.
     A researcher who reads scores and listens to data.
   </p>
   <div class="staff-wrap" aria-hidden="true">
     <canvas id="staff"></canvas>
-    
+    <p class="staff-caption"></p>
   </div>
 </div>
 
@@ -252,17 +265,22 @@
     <p class="eyebrow">소개</p>
     <h2>About</h2>
     <p>
-      My research aims to bridge music with psychological and neuroscientific materials, 
-      focusing on music that incorporates emerging technologies across the 20th and 21st centuries. 
+      My research aims to bridge music with psychological and
+      neuroscientific materials, focusing on music that incorporates
+      emerging technologies across the 20th and 21st centuries.
     </p>
     <p>
-      Current interets on neurofeedback music and brain-computer music interfaces (BCMIs),
-      exploring how composers and artists turn brainwave data into sound.
-      Looking ahead, I would like to expand into AI music - bridging BCMI and AI to better understand how technology shapes modern classical music.
+      I currently work on neurofeedback music and brain–computer music
+      interfaces (BCMI), exploring how composers and artists turn
+      brainwave data into sound. Looking ahead, I want to expand into AI
+      music — bridging BCMI and AI to better understand how technology
+      shapes modern classical music.
     </p>
     <p>
-      Now I am a doctoral student in Musicology at Seoul National University,
-      and from June to December 2026 a guest PhD student at the Chalmers University through the SKERIC Long-Term Mobility Programme.
+      I am a doctoral researcher in Musicology at Seoul National
+      University, and in 2026 a visiting PhD student at the University of
+      Gothenburg / Chalmers and Uppsala University through the SKERIC
+      Long-Term Mobility Fellowship.
     </p>
     <ul class="focus-list">
       <li>neurofeedback music</li>
@@ -278,53 +296,68 @@
     <div class="staffmark" aria-hidden="true"></div>
     <p class="eyebrow">글</p>
     <h2>Writing</h2>
+    <p style="color:var(--muted);margin-bottom:1.8rem;font-size:.97rem">
+
+    </p>
     <ul class="essay-list" lang="ko">
       <li>
         <a href="#essay-1" data-essay="essay-1">
-          <span class="date">2026.06.14</span>
-          <span class="t">스펙트로그램은 악보가 될 수 있는가
-            <span class="venue">에세이 · 웹 발행</span>
+          <span class="date">2024</span>
+          <span class="t">음악과 기술을 넘어서: 새로운 차원을 준비하며
+            <span class="venue">학회 리뷰 · Journal of Music and Theory 43</span>
           </span>
         </a>
       </li>
       <li>
         <a href="#essay-2" data-essay="essay-2">
-          <span class="date">2026.03.02</span>
-          <span class="t">아카이브의 잡음: 디지털화가 지우는 것들
-            <span class="venue">기고 · ○○ 계간지</span>
+          <span class="date">2023</span>
+          <span class="t">감각으로 상상력을 만들다: 서울국제컴퓨터음악제 2023
+            <span class="venue">페스티벌 리뷰 · Emile 21</span>
           </span>
         </a>
       </li>
     </ul>
   </section>
 
-  <!-- ── 작업 ─────────────────────────────── -->
+  <!-- ── 연구 주제 ────────────────────────── -->
   <section id="works">
     <div class="staffmark" aria-hidden="true"></div>
-    <p class="eyebrow">작업</p>
-    <h2>Works</h2>
+    <p class="eyebrow">연구</p>
+    <h2>Research</h2>
     <ul class="works">
       <li>
-        <span class="kind">Research</span>
+        <span class="kind">Doctoral</span>
         <div>
-          <h3>Computational music analysis project</h3>
-          <p>Acoustic feature analysis of an audio corpus.
-             Methodology and code repository published together.</p>
+          <h3>Neurofeedback music &amp; BCMI</h3>
+          <p>How composers and artists use brainwave data to make music —
+             from Alvin Lucier and David Rosenboom to today's brain–computer
+             music interfaces.</p>
         </div>
       </li>
       <li>
-        <span class="kind">Project</span>
+        <span class="kind">Emerging</span>
         <div>
-          <h3>Web-based score archive</h3>
-          <p>A digital archive collecting scattered score materials into a
-             searchable form. <a href="#">View repository</a></p>
+          <h3>AI &amp; music</h3>
+          <p>Bridging BCMI and AI to understand technology's influence on
+             modern classical music. Recent work examines AI creativity and
+             human intervention through cases like <em>Beethoven X</em>.</p>
         </div>
       </li>
       <li>
-        <span class="kind">Talk</span>
+        <span class="kind">Ongoing</span>
         <div>
-          <h3>“Why musicologists learn to code”</h3>
-          <p>Public talk on where research meets technology · slides coming soon.</p>
+          <h3>Electronic voice &amp; opera</h3>
+          <p>The electronic and “divine” voice in electronic music, through
+             Eduardo Reck Miranda's <em>Lampedusa</em> and related works.</p>
+        </div>
+      </li>
+      <li>
+        <span class="kind">Organising</span>
+        <div>
+          <h3>Inclusive AI symposium (2025)</h3>
+          <p>Co-organiser of an international symposium convened by SNU, Lund
+             University, and SKERIC on inclusive AI across disciplines and
+             sectors.</p>
         </div>
       </li>
     </ul>
@@ -334,81 +367,54 @@
   <section id="cv">
     <div class="staffmark" aria-hidden="true"></div>
     <p class="eyebrow">이력</p>
-    <h2>CV</h2>
+    <h2>Curriculum Vitae</h2>
 
     <div class="cv-block">
       <h3>Education</h3>
-      <div class="cv-item"><span class="yr">2023-now</span>
-        <span class="what">Ph.D. in Musicology, Seoul National University</span>span/</div>
-      <div class="cv-item"><span class="yr">2021–2023</span>
-        <span class="what">M.A. in Musicology, Seoul National University <em>— thesis title</em></span></div>
-      <div class="cv-item"><span class="yr">2016–2021</span>
-        <span class="what">B.A. in Musicology (minor in Psychology), Seoul National University <em>— thesis title</span></div>
-    </div>
-
-    <div class="cv-block">
-      <h3>Experience</h3>
-      <div class="cv-item"><span class="yr">20XX–now</span>
-        <span class="what">Researcher, ○○ Institute <em>— digital music archive</em></span></div>
-      <div class="cv-item"><span class="yr">20XX–20XX</span>
-        <span class="what">Research assistant, ○○ project</span></div>
-    </div>
-
-    <div class="cv-block">
-      <h3>Publications &amp; Talks</h3>
-      <div class="cv-item"><span class="yr">2026</span>
-        <span class="what">“Paper title”, ○○ Journal</span></div>
-      <div class="cv-item"><span class="yr">2025</span>
-        <span class="what">Conference presentation, ○○ Society</span></div>
+      <div class="cv-item"><span class="yr">2023–now</span>
+        <span class="what">Doctor of Music in Musicology, Seoul National University</span></div>
+      <div class="cv-item"><span class="yr">2023</span>
+        <span class="what">Master of Music in Musicology, Seoul National University
+          <em class="sub">Thesis: Study on Neurofeedback Music by Alvin Lucier and David Rosenboom</em></span></div>
+      <div class="cv-item"><span class="yr">2021</span>
+        <span class="what">Bachelor of Music in Music Theory, Seoul National University (cum laude), Minor in Psychology</span></div>
     </div>
 
     <a class="cv-dl" href="#">Download full CV (PDF) ↓</a>
+    <p style="font-size:.85rem;color:var(--muted);margin-top:.8rem">
+      ※ 위 링크는 아직 비어 있어요. CV PDF를 저장소에 올린 뒤 href="cv.pdf" 로 바꾸면 됩니다.
+    </p>
   </section>
 
   <!-- ── 글 읽기 화면 (숨김, 클릭 시 표시) ── -->
   <article class="essay" id="essay-1" lang="ko">
     <button class="back" data-back>← Back to writing</button>
-    <h2>스펙트로그램은 악보가 될 수 있는가</h2>
-    <p class="meta">2026.06.14 · 에세이 · 약 8분</p>
+    <h2>음악과 기술을 넘어서</h2>
+    <p class="meta">2024 · 학회 리뷰 · Journal of Music and Theory 43</p>
     <div class="body">
       <p>
-        악보는 소리를 약속으로 바꾼다. 다섯 줄 위의 기호는 아직 울리지 않은
-        소리를 지시하고, 연주자는 그 약속을 몸으로 이행한다. 반면 스펙트로그램은
-        이미 울린 소리의 흔적이다. 시간과 주파수의 평면 위에 에너지가 남긴
-        자국. 하나는 미래를 향하고, 하나는 과거를 기록한다.
+        (예시 글입니다.) 이 자리에 실제 글이나 리뷰 전문을 넣으세요.
+        이 블록과 위 목록의 항목을 짝으로 복사하면 글을 계속 추가할 수 있어요.
       </p>
       <p>
-        그런데 요즘 나는 두 그림이 점점 닮아간다고 느낀다. 자동 채보 모델은
-        스펙트로그램에서 음표를 읽어내고, 생성 모델은 악보 없이 스펙트로그램을
-        직접 그려서 소리를 만든다. 기록이 지시가 되고, 지시가 기록이 되는
-        순간들. 이 글은 그 경계가 흐려질 때 음악학이 무엇을 물어야 하는지에
-        관한 메모다.
-      </p>
-      <p>
-        (이 글은 예시용 자리표시 텍스트입니다. 이 블록을 복사해 자신의 글을
-        넣으면 같은 형식으로 발행됩니다.)
+        문단은 &lt;p&gt; 태그로 구분합니다. 학술 리뷰든 에세이든 자유롭게
+        형식을 바꿔 쓰셔도 좋아요.
       </p>
     </div>
   </article>
 
   <article class="essay" id="essay-2" lang="ko">
     <button class="back" data-back>← Back to writing</button>
-    <h2>아카이브의 잡음: 디지털화가 지우는 것들</h2>
-    <p class="meta">2026.03.02 · 기고 · ○○ 계간지</p>
+    <h2>감각으로 상상력을 만들다</h2>
+    <p class="meta">2023 · 페스티벌 리뷰 · Emile 21</p>
     <div class="body">
       <p>
-        오래된 음반을 디지털로 옮길 때 우리는 먼저 잡음을 제거한다. 표면의
-        긁힘, 테이프의 히스, 녹음 현장의 웅성거림. 깨끗해진 파일은 듣기
-        좋지만, 그 잡음 안에 있던 정보 — 매체의 역사, 녹음의 조건, 시간의
-        흔적 — 도 함께 사라진다.
+        (예시 글입니다.) 서울국제컴퓨터음악제 리뷰를 여기에 옮겨 넣거나,
+        새로운 에세이로 교체하세요.
       </p>
       <p>
-        아카이브는 보존인가, 번역인가. 이 글은 디지털화라는 번역 과정에서
-        무엇이 남고 무엇이 지워지는지를 몇 개의 사례로 살핀다.
-      </p>
-      <p>
-        (이 글 역시 예시입니다. 목록의 항목과 이 본문 블록을 짝으로 추가하면
-        글이 늘어납니다.)
+        각 글은 목록의 &lt;li&gt; 항목 하나와 이 &lt;article&gt; 블록 하나로
+        이루어집니다. id 값(essay-2 등)만 서로 맞춰주면 됩니다.
       </p>
     </div>
   </article>
@@ -417,38 +423,37 @@
 
 <footer>
   <div class="foot-in">
-    <span>© 2026 Doyun Lee</span>
+    <span>© 2026 Yerim Gim · 김예림</span>
     <span>
-      <a href="mailto:hello@example.com">hello@example.com</a>
-      &nbsp;·&nbsp; <a href="#">github</a>
-      &nbsp;·&nbsp; <a href="#">rss</a>
+      <a href="mailto:yrg7920@snu.ac.kr">yrg7920@snu.ac.kr</a>
+      &nbsp;·&nbsp; <a href="mailto:yrg7920@gmail.com">gmail</a>
     </span>
   </div>
 </footer>
 
 <script>
-/* ── 히어로: 오선 위 파형 ─────────────────── */
+/* ── 히어로: 오선 위 뇌파 → 파형 ──────────── */
 (function(){
   const cv = document.getElementById('staff');
   const ctx = cv.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let w, h, dpr, t = 0, mouseX = .5;
- 
+
   function size(){
     dpr = Math.min(devicePixelRatio || 1, 2);
     w = cv.clientWidth; h = cv.clientHeight;
     cv.width = w * dpr; cv.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
- 
+
   // 의사난수(반복 가능한 뇌파 노이즈)
   function noise(x){
     return Math.sin(x*12.9898)*43758.5453 % 1;
   }
- 
+
   function draw(){
     ctx.clearRect(0, 0, w, h);
- 
+
     const top = h * .25, gap = (h * .5) / 4;
     ctx.strokeStyle = getComputedStyle(document.documentElement)
       .getPropertyValue('--line').trim();
@@ -457,7 +462,7 @@
       const y = top + i * gap;
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
     }
- 
+
     // 왼쪽은 불규칙한 뇌파, 오른쪽으로 갈수록 매끈한 사인파로 "정리"됨
     ctx.strokeStyle = getComputedStyle(document.documentElement)
       .getPropertyValue('--accent').trim();
@@ -482,15 +487,15 @@
     }
     ctx.stroke();
   }
- 
+
   function loop(){ t += .016; draw(); requestAnimationFrame(loop); }
- 
+
   addEventListener('resize', () => { size(); if (reduce) draw(); });
   addEventListener('pointermove', e => {
     mouseX = Math.max(0, Math.min(1, e.clientX / innerWidth));
     if (reduce) draw();
   });
- 
+
   size();
   reduce ? draw() : loop();
 })();
@@ -520,14 +525,12 @@
   document.querySelectorAll('[data-back]')
     .forEach(b => b.addEventListener('click', closeEssay));
 
-  // 읽는 중 상단 메뉴를 누르면 원래 화면으로 복귀
   document.querySelectorAll('nav.main a, .brand').forEach(a =>
     a.addEventListener('click', () => {
       essays.forEach(x => x.classList.remove('open'));
       document.body.classList.remove('reading');
     }));
 
-  // 링크로 직접 들어온 경우
   if (location.hash.startsWith('#essay-')){
     const el = document.getElementById(location.hash.slice(1));
     if (el) openEssay(el.id);
