@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Doyun Lee — writing between musicology &amp; technology</title>
+<meta name="description" content="Personal site of Doyun Lee. Essays, works, and CV — between musicology and technology." />
+
+<!-- ──────────────────────────────────────────────
+  사용법 요약
+  · 이름/소개/이메일: 본문에서 "이도윤" 등 자리표시 텍스트를 검색해 바꾸세요.
+  · 글 추가: <section id="writing"> 안의 목록에 <li> 하나,
+    그리고 아래 <article class="essay"> 블록 하나를 복사해 채우면 됩니다.
+  · 배포: 이 파일 하나를 GitHub Pages / Netlify에 올리면 끝.
+─────────────────────────────────────────────── -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#F3F3F0;
+    --ink:#17171B;
+    --muted:#70707A;
+    --line:#D7D7D0;
+    --accent:#157A45;
+    --accent-ghost:rgba(21,122,69,.08);
+    --serif:"Gowun Batang","Noto Serif KR",serif;
+    --display:"Abril Fatface","Gowun Batang",serif;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
+    --measure:44rem;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:1.0625rem;
+    line-height:1.85;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{background:var(--accent);color:var(--paper)}
+
+  /* ── 개구리 커서 🐸 (빼고 싶으면 이 블록 삭제) ── */
+  body, a, button{
+    cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 32 32'><ellipse cx='16' cy='20' rx='11' ry='8.5' fill='%233FA84C'/><circle cx='9.5' cy='10' r='5.5' fill='%233FA84C'/><circle cx='22.5' cy='10' r='5.5' fill='%233FA84C'/><circle cx='9.5' cy='9.5' r='2.7' fill='white'/><circle cx='22.5' cy='9.5' r='2.7' fill='white'/><circle cx='10' cy='9.8' r='1.3' fill='%2317171B'/><circle cx='22' cy='9.8' r='1.3' fill='%2317171B'/><path d='M10.5 21.5 Q16 25.5 21.5 21.5' stroke='%2317171B' stroke-width='1.6' fill='none' stroke-linecap='round'/><circle cx='11.5' cy='18.5' r='1.2' fill='%23F09A9A'/><circle cx='20.5' cy='18.5' r='1.2' fill='%23F09A9A'/></svg>") 6 4, auto;
+  }
+
+  a{color:inherit;text-decoration:none}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+  .skip{
+    position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);
+    padding:.5rem 1rem;z-index:99;font-family:var(--mono);font-size:.8rem;
+  }
+  .skip:focus{left:0}
+
+  /* ── 상단 내비게이션 ─────────────────────── */
+  header.top{
+    position:sticky;top:0;z-index:10;
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:1rem 1.5rem;
+    background:color-mix(in srgb,var(--paper) 88%,transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em}
+  .brand em{font-style:normal;color:var(--accent)}
+  nav.main{display:flex;gap:1.4rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em}
+  nav.main a{color:var(--muted)}
+  nav.main a:hover{color:var(--accent)}
+
+  /* ── 히어로: 오선 위의 파형 ─────────────── */
+  .hero{
+    max-width:56rem;margin:0 auto;
+    padding:clamp(4rem,10vh,7rem) 1.5rem 3.5rem;
+  }
+  .hero .hello{
+    font-family:var(--mono);font-size:.78rem;color:var(--muted);
+    letter-spacing:.08em;margin-bottom:1.2rem;
+  }
+  .hero h1{
+    font-family:var(--display);
+    font-weight:400;
+    font-size:clamp(2.6rem,7vw,4.6rem);
+    line-height:1.12;
+    letter-spacing:-.01em;
+  }
+  .hero h1 .latin{font-style:normal;color:var(--accent)}
+  .hero p.tagline{
+    margin-top:1.4rem;max-width:34rem;color:var(--muted);
+  }
+  .staff-wrap{margin-top:3rem}
+  .staff-wrap canvas{display:block;width:100%;height:120px}
+  .staff-caption{
+    font-family:var(--mono);font-size:.7rem;color:var(--muted);
+    margin-top:.6rem;letter-spacing:.06em;
+  }
+
+  /* ── 섹션 공통: 오선 프래그먼트 구분자 ──── */
+  main{max-width:var(--measure);margin:0 auto;padding:0 1.5rem 6rem}
+  section{padding-top:4.5rem}
+  .staffmark{
+    width:72px;height:17px;margin-bottom:1rem;
+    background:repeating-linear-gradient(
+      to bottom, var(--line) 0 1px, transparent 1px 4px);
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;
+    color:var(--accent);text-transform:uppercase;margin-bottom:.5rem;
+  }
+  h2{
+    font-family:var(--display);font-weight:400;
+    font-size:clamp(1.7rem,3.4vw,2.3rem);line-height:1.2;margin-bottom:1.6rem;
+  }
+  section p + p{margin-top:1.1rem}
+
+  /* ── 소개 ────────────────────────────────── */
+  #bio .note{
+    margin-top:1.6rem;padding-left:1.1rem;border-left:2px solid var(--accent);
+    color:var(--muted);font-size:.95rem;
+  }
+
+  /* ── 글 목록 ─────────────────────────────── */
+  .essay-list{list-style:none}
+  .essay-list li{border-bottom:1px solid var(--line)}
+  .essay-list a{
+    display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;
+    padding:1.05rem .4rem;align-items:baseline;
+  }
+  .essay-list a:hover{background:var(--accent-ghost)}
+  .essay-list .date{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  .essay-list .t{font-size:1.05rem;line-height:1.5}
+  .essay-list .venue{
+    display:block;font-family:var(--mono);font-size:.7rem;color:var(--muted);
+    margin-top:.25rem;letter-spacing:.04em;
+  }
+  @media (max-width:560px){
+    .essay-list a{grid-template-columns:1fr;gap:.2rem}
+  }
+
+  /* ── 글 읽기 화면 ────────────────────────── */
+  .essay{display:none}
+  .essay.open{display:block}
+  body.reading main > section{display:none}
+  body.reading .hero{display:none}
+  .essay .back{
+    font-family:var(--mono);font-size:.76rem;color:var(--muted);
+    background:none;border:none;cursor:pointer;padding:.2rem 0;
+  }
+  .essay .back:hover{color:var(--accent)}
+  .essay h2{margin-top:1.2rem}
+  .essay .meta{
+    font-family:var(--mono);font-size:.74rem;color:var(--muted);
+    margin-bottom:2.2rem;letter-spacing:.04em;
+  }
+  .essay .body p{margin-bottom:1.15rem}
+  .essay .body p:first-of-type::first-letter{
+    font-family:var(--display);font-size:3.1em;float:left;
+    line-height:.82;padding-right:.12em;color:var(--accent);
+  }
+
+  /* ── 작업 ────────────────────────────────── */
+  .works{list-style:none}
+  .works li{
+    display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;
+    padding:1.2rem 0;border-bottom:1px solid var(--line);
+  }
+  .works .kind{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.06em}
+  .works h3{font-family:var(--serif);font-weight:700;font-size:1.02rem;margin-bottom:.35rem}
+  .works p{color:var(--muted);font-size:.95rem;line-height:1.7}
+  .works a{border-bottom:1px solid var(--line)}
+  .works a:hover{border-color:var(--accent)}
+  @media (max-width:560px){ .works li{grid-template-columns:1fr;gap:.3rem} }
+
+  /* ── CV ─────────────────────────────────── */
+  .cv-block{margin-bottom:2.2rem}
+  .cv-block h3{
+    font-family:var(--mono);font-size:.74rem;font-weight:500;
+    letter-spacing:.12em;color:var(--muted);text-transform:uppercase;
+    margin-bottom:.9rem;
+  }
+  .cv-item{
+    display:grid;grid-template-columns:7.5rem 1fr;gap:1rem;
+    padding:.45rem 0;font-size:.98rem;
+  }
+  .cv-item .yr{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+  .cv-item .what em{font-style:normal;color:var(--muted);font-size:.9rem}
+  .cv-dl{
+    display:inline-block;margin-top:.6rem;
+    font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;
+    border:1px solid var(--ink);padding:.5rem .9rem;border-radius:2px;
+  }
+  .cv-dl:hover{background:var(--ink);color:var(--paper)}
+  @media (max-width:560px){ .cv-item{grid-template-columns:4.5rem 1fr} }
+
+  /* ── 푸터 ────────────────────────────────── */
+  footer{
+    border-top:1px solid var(--line);
+    padding:2.5rem 1.5rem 3.5rem;
+  }
+  .foot-in{
+    max-width:var(--measure);margin:0 auto;
+    display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.05em;
+  }
+  .foot-in a:hover{color:var(--accent)}
+</style>
+</head>
+
+<body>
+<a class="skip" href="#bio">Skip to content</a>
+
+<header class="top">
+  <a class="brand" href="#top">doyun.lee <em>·</em> 이도윤</a>
+  <nav class="main" aria-label="Main menu">
+    <a href="#bio">About</a>
+    <a href="#writing">Writing</a>
+    <a href="#works">Works</a>
+    <a href="#cv">CV</a>
+  </nav>
+</header>
+
+<!-- ── 히어로 ──────────────────────────────── -->
+<div class="hero" id="top">
+  <p class="hello">musicology × technology — seoul</p>
+  <h1>I read sound.<br /><span class="latin">I listen to data.</span></h1>
+  <p class="tagline">
+    Musicologist and writer, working between scores and code —
+    documenting the moments where music meets technology.
+    Essays in Korean, everything else in English.
+  </p>
+  <div class="staff-wrap" aria-hidden="true">
+    <canvas id="staff"></canvas>
+    <p class="staff-caption">fig. 0 — 오선 위에 그려지는 파형 · sine(t) on a staff</p>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ── 소개 ─────────────────────────────── -->
+  <section id="bio">
+    <div class="staffmark" aria-hidden="true"></div>
+    <p class="eyebrow">소개</p>
+    <h2>About</h2>
+    <p>
+      Doyun Lee works at the boundary between musicology and technology.
+      Trained as a musicologist, half of the research happens in code —
+      analysing audio corpora, digitising scores, and writing about what
+      turns up along the way.
+    </p>
+    <p>
+      Current interests include the digitisation of music archives,
+      computational music analysis, and how technology changes the way we
+      listen. Writes both academic papers and essays for a wider audience.
+    </p>
+    <p class="note">
+      ※ 위 문단은 자리표시 텍스트입니다. 본인의 이야기로 바꿔 넣으세요 —
+      두 문단이면 충분합니다.
+    </p>
+  </section>
+
+  <!-- ── 글 ───────────────────────────────── -->
+  <section id="writing">
+    <div class="staffmark" aria-hidden="true"></div>
+    <p class="eyebrow">글</p>
+    <h2>Writing</h2>
+    <ul class="essay-list" lang="ko">
+      <li>
+        <a href="#essay-1" data-essay="essay-1">
+          <span class="date">2026.06.14</span>
+          <span class="t">스펙트로그램은 악보가 될 수 있는가
+            <span class="venue">에세이 · 웹 발행</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a href="#essay-2" data-essay="essay-2">
+          <span class="date">2026.03.02</span>
+          <span class="t">아카이브의 잡음: 디지털화가 지우는 것들
+            <span class="venue">기고 · ○○ 계간지</span>
+          </span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── 작업 ─────────────────────────────── -->
+  <section id="works">
+    <div class="staffmark" aria-hidden="true"></div>
+    <p class="eyebrow">작업</p>
+    <h2>Works</h2>
+    <ul class="works">
+      <li>
+        <span class="kind">Research</span>
+        <div>
+          <h3>Computational music analysis project</h3>
+          <p>Acoustic feature analysis of an audio corpus.
+             Methodology and code repository published together.</p>
+        </div>
+      </li>
+      <li>
+        <span class="kind">Project</span>
+        <div>
+          <h3>Web-based score archive</h3>
+          <p>A digital archive collecting scattered score materials into a
+             searchable form. <a href="#">View repository</a></p>
+        </div>
+      </li>
+      <li>
+        <span class="kind">Talk</span>
+        <div>
+          <h3>“Why musicologists learn to code”</h3>
+          <p>Public talk on where research meets technology · slides coming soon.</p>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ── CV ──────────────────────────────── -->
+  <section id="cv">
+    <div class="staffmark" aria-hidden="true"></div>
+    <p class="eyebrow">이력</p>
+    <h2>CV</h2>
+
+    <div class="cv-block">
+      <h3>Education</h3>
+      <div class="cv-item"><span class="yr">20XX–20XX</span>
+        <span class="what">M.A. in Musicology, ○○ University <em>— thesis title</em></span></div>
+      <div class="cv-item"><span class="yr">20XX–20XX</span>
+        <span class="what">B.A. in Musicology, ○○ University</span></div>
+    </div>
+
+    <div class="cv-block">
+      <h3>Experience</h3>
+      <div class="cv-item"><span class="yr">20XX–now</span>
+        <span class="what">Researcher, ○○ Institute <em>— digital music archive</em></span></div>
+      <div class="cv-item"><span class="yr">20XX–20XX</span>
+        <span class="what">Research assistant, ○○ project</span></div>
+    </div>
+
+    <div class="cv-block">
+      <h3>Publications &amp; Talks</h3>
+      <div class="cv-item"><span class="yr">2026</span>
+        <span class="what">“Paper title”, ○○ Journal</span></div>
+      <div class="cv-item"><span class="yr">2025</span>
+        <span class="what">Conference presentation, ○○ Society</span></div>
+    </div>
+
+    <a class="cv-dl" href="#">Download full CV (PDF) ↓</a>
+  </section>
+
+  <!-- ── 글 읽기 화면 (숨김, 클릭 시 표시) ── -->
+  <article class="essay" id="essay-1" lang="ko">
+    <button class="back" data-back>← Back to writing</button>
+    <h2>스펙트로그램은 악보가 될 수 있는가</h2>
+    <p class="meta">2026.06.14 · 에세이 · 약 8분</p>
+    <div class="body">
+      <p>
+        악보는 소리를 약속으로 바꾼다. 다섯 줄 위의 기호는 아직 울리지 않은
+        소리를 지시하고, 연주자는 그 약속을 몸으로 이행한다. 반면 스펙트로그램은
+        이미 울린 소리의 흔적이다. 시간과 주파수의 평면 위에 에너지가 남긴
+        자국. 하나는 미래를 향하고, 하나는 과거를 기록한다.
+      </p>
+      <p>
+        그런데 요즘 나는 두 그림이 점점 닮아간다고 느낀다. 자동 채보 모델은
+        스펙트로그램에서 음표를 읽어내고, 생성 모델은 악보 없이 스펙트로그램을
+        직접 그려서 소리를 만든다. 기록이 지시가 되고, 지시가 기록이 되는
+        순간들. 이 글은 그 경계가 흐려질 때 음악학이 무엇을 물어야 하는지에
+        관한 메모다.
+      </p>
+      <p>
+        (이 글은 예시용 자리표시 텍스트입니다. 이 블록을 복사해 자신의 글을
+        넣으면 같은 형식으로 발행됩니다.)
+      </p>
+    </div>
+  </article>
+
+  <article class="essay" id="essay-2" lang="ko">
+    <button class="back" data-back>← Back to writing</button>
+    <h2>아카이브의 잡음: 디지털화가 지우는 것들</h2>
+    <p class="meta">2026.03.02 · 기고 · ○○ 계간지</p>
+    <div class="body">
+      <p>
+        오래된 음반을 디지털로 옮길 때 우리는 먼저 잡음을 제거한다. 표면의
+        긁힘, 테이프의 히스, 녹음 현장의 웅성거림. 깨끗해진 파일은 듣기
+        좋지만, 그 잡음 안에 있던 정보 — 매체의 역사, 녹음의 조건, 시간의
+        흔적 — 도 함께 사라진다.
+      </p>
+      <p>
+        아카이브는 보존인가, 번역인가. 이 글은 디지털화라는 번역 과정에서
+        무엇이 남고 무엇이 지워지는지를 몇 개의 사례로 살핀다.
+      </p>
+      <p>
+        (이 글 역시 예시입니다. 목록의 항목과 이 본문 블록을 짝으로 추가하면
+        글이 늘어납니다.)
+      </p>
+    </div>
+  </article>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 Doyun Lee</span>
+    <span>
+      <a href="mailto:hello@example.com">hello@example.com</a>
+      &nbsp;·&nbsp; <a href="#">github</a>
+      &nbsp;·&nbsp; <a href="#">rss</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* ── 히어로: 오선 위 파형 ─────────────────── */
+(function(){
+  const cv = document.getElementById('staff');
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, dpr, t = 0, mouseX = .5;
+
+  function size(){
+    dpr = Math.min(devicePixelRatio || 1, 2);
+    w = cv.clientWidth; h = cv.clientHeight;
+    cv.width = w * dpr; cv.height = h * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function draw(){
+    ctx.clearRect(0, 0, w, h);
+
+    // 오선 다섯 줄
+    const top = h * .25, gap = (h * .5) / 4;
+    ctx.strokeStyle = getComputedStyle(document.documentElement)
+      .getPropertyValue('--line').trim();
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++){
+      const y = top + i * gap;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+
+    // 파형: 두 개의 사인파 합
+    ctx.strokeStyle = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent').trim();
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    const mid = h * .5, amp = h * .22;
+    for (let x = 0; x <= w; x++){
+      const p = x / w;
+      const env = Math.sin(Math.PI * p);            // 양끝 감쇠
+      const f = 3 + mouseX * 4;                      // 마우스 → 주파수
+      const y = mid + env * amp * (
+        Math.sin(p * Math.PI * 2 * f + t) * .7 +
+        Math.sin(p * Math.PI * 2 * f * 2.01 + t * 1.4) * .3
+      );
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  function loop(){ t += .016; draw(); requestAnimationFrame(loop); }
+
+  addEventListener('resize', () => { size(); if (reduce) draw(); });
+  addEventListener('pointermove', e => {
+    mouseX = Math.max(0, Math.min(1, e.clientX / innerWidth));
+    if (reduce) draw();
+  });
+
+  size();
+  reduce ? draw() : loop();
+})();
+
+/* ── 글 목록 ↔ 읽기 화면 전환 ─────────────── */
+(function(){
+  const links = document.querySelectorAll('[data-essay]');
+  const essays = document.querySelectorAll('.essay');
+
+  function openEssay(id){
+    essays.forEach(a => a.classList.toggle('open', a.id === id));
+    document.body.classList.add('reading');
+    scrollTo({ top: 0 });
+  }
+  function closeEssay(){
+    essays.forEach(a => a.classList.remove('open'));
+    document.body.classList.remove('reading');
+    history.replaceState(null, '', '#writing');
+    document.getElementById('writing').scrollIntoView();
+  }
+
+  links.forEach(l => l.addEventListener('click', e => {
+    e.preventDefault();
+    openEssay(l.dataset.essay);
+    history.replaceState(null, '', '#' + l.dataset.essay);
+  }));
+  document.querySelectorAll('[data-back]')
+    .forEach(b => b.addEventListener('click', closeEssay));
+
+  // 읽는 중 상단 메뉴를 누르면 원래 화면으로 복귀
+  document.querySelectorAll('nav.main a, .brand').forEach(a =>
+    a.addEventListener('click', () => {
+      essays.forEach(x => x.classList.remove('open'));
+      document.body.classList.remove('reading');
+    }));
+
+  // 링크로 직접 들어온 경우
+  if (location.hash.startsWith('#essay-')){
+    const el = document.getElementById(location.hash.slice(1));
+    if (el) openEssay(el.id);
+  }
+})();
+</script>
+</body>
+</html>
