@@ -433,18 +433,22 @@
   const ctx = cv.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let w, h, dpr, t = 0, mouseX = .5;
-
+ 
   function size(){
     dpr = Math.min(devicePixelRatio || 1, 2);
     w = cv.clientWidth; h = cv.clientHeight;
     cv.width = w * dpr; cv.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-
+ 
+  // 의사난수(반복 가능한 뇌파 노이즈)
+  function noise(x){
+    return Math.sin(x*12.9898)*43758.5453 % 1;
+  }
+ 
   function draw(){
     ctx.clearRect(0, 0, w, h);
-
-    // 오선 다섯 줄
+ 
     const top = h * .25, gap = (h * .5) / 4;
     ctx.strokeStyle = getComputedStyle(document.documentElement)
       .getPropertyValue('--line').trim();
@@ -453,8 +457,8 @@
       const y = top + i * gap;
       ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
     }
-
-    // 파형: 두 개의 사인파 합
+ 
+    // 왼쪽은 불규칙한 뇌파, 오른쪽으로 갈수록 매끈한 사인파로 "정리"됨
     ctx.strokeStyle = getComputedStyle(document.documentElement)
       .getPropertyValue('--accent').trim();
     ctx.lineWidth = 1.6;
@@ -462,25 +466,31 @@
     const mid = h * .5, amp = h * .22;
     for (let x = 0; x <= w; x++){
       const p = x / w;
-      const env = Math.sin(Math.PI * p);            // 양끝 감쇠
-      const f = 3 + mouseX * 4;                      // 마우스 → 주파수
-      const y = mid + env * amp * (
-        Math.sin(p * Math.PI * 2 * f + t) * .7 +
-        Math.sin(p * Math.PI * 2 * f * 2.01 + t * 1.4) * .3
+      const env = Math.sin(Math.PI * p);
+      const f = 3 + mouseX * 4;
+      const clean = Math.sin(p * Math.PI * 2 * f + t) * .7
+                  + Math.sin(p * Math.PI * 2 * f * 2.01 + t * 1.4) * .3;
+      // 뇌파 노이즈: 왼쪽(p작을수록) 강함
+      const eeg = (
+        Math.sin(p * 90 + t * 3) * .5 +
+        Math.sin(p * 210 + t * 5) * .3 +
+        Math.sin(p * 400 + t) * .2
       );
+      const mix = clean * p + eeg * (1 - p);   // 왼→오 전환
+      const y = mid + env * amp * mix;
       x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.stroke();
   }
-
+ 
   function loop(){ t += .016; draw(); requestAnimationFrame(loop); }
-
+ 
   addEventListener('resize', () => { size(); if (reduce) draw(); });
   addEventListener('pointermove', e => {
     mouseX = Math.max(0, Math.min(1, e.clientX / innerWidth));
     if (reduce) draw();
   });
-
+ 
   size();
   reduce ? draw() : loop();
 })();
