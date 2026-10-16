@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yerim Gim — music &amp; technology</title>
+<title>Yerim Gim — musicology</title>
 <meta name="description" content="Yerim Gim (김예림) — musicologist working on neurofeedback music, brain–computer music interfaces, and AI music. Writing, works, and CV." />
 
 <!-- ──────────────────────────────────────────────
@@ -182,7 +182,18 @@
   /* 넓을 땐 4열, 중간 2열, 좁으면 1열 */
   @media (max-width:860px){ .card-grid{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:520px){ .card-grid{grid-template-columns:1fr} }
-
+ 
+  /* ── 더 보기 ─────────────────────────────── */
+  .card-grid li.is-hidden{display:none}
+  .more-btn{
+    display:inline-block;margin:1rem 0 .3rem;
+    font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;
+    color:var(--muted);background:none;
+    border:1px solid var(--line);border-radius:3px;padding:.5rem .9rem;
+    cursor:pointer;transition:all .15s;
+  }
+  .more-btn:hover{border-color:var(--accent);color:var(--accent)}
+  
   /* ── 글 읽기 화면 ────────────────────────── */
   .essay{display:none}
   .essay.open{display:block}
@@ -217,6 +228,38 @@
   .works a:hover{border-color:var(--accent)}
   @media (max-width:560px){ .works li{grid-template-columns:1fr;gap:.3rem} }
 
+  /* ── 출판물 목록 (Publications) ──────────── */
+  .pub-list{list-style:none}
+  .pub-list li{
+    display:grid;grid-template-columns:4rem 1fr auto;gap:1rem;align-items:baseline;
+    padding:1.1rem .2rem;border-bottom:1px solid var(--line);
+  }
+  .pub-list .yr{font-family:var(--mono);font-size:.76rem;color:var(--muted);padding-top:.1rem}
+  .pub-list .pt{font-size:1.02rem;line-height:1.5;font-weight:700}
+  .pub-list .where{
+    display:block;font-style:italic;color:var(--muted);
+    font-size:.92rem;font-weight:400;margin-top:.2rem;
+  }
+  .pub-list .kindtag{
+    display:inline-block;font-family:var(--mono);font-size:.64rem;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
+    border:1px solid var(--accent-ghost);background:var(--accent-ghost);
+    border-radius:999px;padding:.1rem .5rem;margin-bottom:.4rem;
+  }
+  .pub-list .lnk{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;
+    white-space:nowrap;border:1px solid var(--line);border-radius:3px;
+    padding:.35rem .7rem;color:var(--muted);align-self:center;
+    transition:all .15s;
+  }
+  .pub-list .lnk:hover{border-color:var(--accent);color:var(--accent)}
+  .pub-list .lnk.soon{opacity:.5;pointer-events:none}
+  @media (max-width:620px){
+    .pub-list li{grid-template-columns:1fr;gap:.35rem}
+    .pub-list .yr{order:-1}
+    .pub-list .lnk{justify-self:start;margin-top:.3rem}
+  }
+ 
   /* ── CV ─────────────────────────────────── */
   .cv-block{margin-bottom:2.4rem}
   .cv-block h3{
@@ -317,7 +360,7 @@
   <!-- ── 연구 / 출판물
     링크 다는 법: 각 항목의 href="#" 를 논문 DOI나 저널 주소로 바꾸세요.
     예) <a class="lnk" href="https://doi.org/10.xxxx/xxxx" target="_blank" rel="noopener">Link ↗</a>
-    아직 링크가 없으면 class="link soon" 으로 두면 흐리게 비활성 표시됩니다.
+    아직 링크가 없으면 class="lnk soon" 으로 두면 흐리게 비활성 표시됩니다.
   ───────────────────────────────────────── -->
    <section id="works">
     <div class="staffmark" aria-hidden="true"></div>
@@ -464,6 +507,13 @@
         <a href="#essay-8" data-essay="essay-8">
           <span class="date">soon</span>
           <span class="t">네 번째 에세이 (준비 중)</span>
+          <span class="venue">—</span>
+        </a>
+      </li>
+      <li>
+        <a href="#essay-8" data-essay="essay-8">
+          <span class="date">soon</span>
+          <span class="t">다섯 번째 에세이 (준비 중)</span>
           <span class="venue">—</span>
         </a>
       </li>
