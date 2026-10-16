@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Yerim Gim — musicology &amp; technology</title>
+<title>Yerim Gim — music &amp; technology</title>
 <meta name="description" content="Yerim Gim (김예림) — musicologist working on neurofeedback music, brain–computer music interfaces, and AI music. Writing, works, and CV." />
 
 <!-- ──────────────────────────────────────────────
@@ -159,6 +159,39 @@
     .essay-list a{grid-template-columns:1fr;gap:.2rem}
   }
 
+  /* ── 글 카테고리 + 카드 그리드 ──────────── */
+  .cat-title{
+    font-family:var(--mono);font-size:.76rem;font-weight:500;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+    margin:2.6rem 0 1.1rem;padding-bottom:.45rem;
+    border-bottom:1px solid var(--line);
+  }
+  .cat-title:first-of-type{margin-top:0}
+  .card-grid{
+    list-style:none;display:grid;gap:.9rem;
+    grid-template-columns:repeat(4,1fr);
+  }
+  .card-grid li{display:flex}
+  .card-grid a{
+    display:flex;flex-direction:column;gap:.5rem;width:100%;
+    border:1px solid var(--line);border-radius:4px;
+    padding:1rem .95rem 1.1rem;background:transparent;
+    transition:border-color .15s, background .15s, transform .15s;
+  }
+  .card-grid a:hover{
+    border-color:var(--accent);background:var(--accent-ghost);
+    transform:translateY(-2px);
+  }
+  .card-grid .date{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+  .card-grid .t{font-size:.98rem;line-height:1.45;font-weight:700}
+  .card-grid .venue{
+    font-family:var(--mono);font-size:.66rem;color:var(--muted);
+    letter-spacing:.03em;margin-top:auto;padding-top:.4rem;
+  }
+  /* 넓을 땐 4열, 중간 2열, 좁으면 1열 */
+  @media (max-width:860px){ .card-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:520px){ .card-grid{grid-template-columns:1fr} }
+ 
   /* ── 글 읽기 화면 ────────────────────────── */
   .essay{display:none}
   .essay.open{display:block}
@@ -277,17 +310,17 @@
       shapes modern classical music.
     </p>
     <p>
-      I am a doctoral researcher in Musicology at Seoul National
+      I am a doctoral student in Musicology at Seoul National
       University, and in 2026 a visiting PhD student at the University of
       Gothenburg / Chalmers and Uppsala University through the SKERIC
       Long-Term Mobility Fellowship.
     </p>
     <ul class="focus-list">
-      <li>neurofeedback music</li>
-      <li>brain–computer music interfaces</li>
-      <li>AI &amp; music</li>
-      <li>music aesthetics</li>
-      <li>electronic music</li>
+      <li>Neurofeedback Music</li>
+      <li>Brain–Computer Music Interfaces</li>
+      <li>AI &amp; Music</li>
+      <li>Music Aesthetics</li>
+      <li>Electronic Music</li>
     </ul>
   </section>
 
@@ -297,23 +330,43 @@
     <p class="eyebrow">글</p>
     <h2>Writing</h2>
     <p style="color:var(--muted);margin-bottom:1.8rem;font-size:.97rem">
-
+      학술 논문・비평문과 음악을 둘러싼 에세이를 씁니다.
     </p>
-    <ul class="essay-list" lang="ko">
+   
+    <!-- 카테고리 1: 페이퍼 / 비평문 -->
+    <h3 class="cat-title">Papers &amp; Criticism · 페이퍼 / 비평문</h3>
+    <ul class="card-grid" lang="ko">
       <li>
         <a href="#essay-1" data-essay="essay-1">
           <span class="date">2024</span>
-          <span class="t">음악과 기술을 넘어서: 새로운 차원을 준비하며
-            <span class="venue">학회 리뷰 · Journal of Music and Theory 43</span>
-          </span>
+          <span class="t">음악과 기술을 넘어서: 새로운 차원을 준비하며</span>
+          <span class="venue">학회 리뷰 · Journal of Music and Theory 43</span>
         </a>
       </li>
       <li>
         <a href="#essay-2" data-essay="essay-2">
           <span class="date">2023</span>
-          <span class="t">감각으로 상상력을 만들다: 서울국제컴퓨터음악제 2023
-            <span class="venue">페스티벌 리뷰 · Emile 21</span>
-          </span>
+          <span class="t">감각으로 상상력을 만들다: 서울국제컴퓨터음악제 2023</span>
+          <span class="venue">페스티벌 리뷰 · Emile 21</span>
+        </a>
+      </li>
+    </ul>
+
+      <!-- 카테고리 2: 에세이 -->
+    <h3 class="cat-title">Essays · 음악 에세이</h3>
+    <ul class="card-grid" lang="ko">
+      <li>
+        <a href="#essay-5" data-essay="essay-5">
+          <span class="date">연재</span>
+          <span class="t">상황별 음악 듣기: AAA</span>
+          <span class="venue">상황별 음악 듣기 ①</span>
+        </a>
+      </li>
+      <li>
+        <a href="#essay-6" data-essay="essay-6">
+          <span class="date">공연장에서 만난 소리들: 예테보리</span>
+          <span class="t"></span>
+          <span class="venue">공연・여행 음악 감상</span>
         </a>
       </li>
     </ul>
