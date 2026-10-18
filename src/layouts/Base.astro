@@ -1,0 +1,47 @@
+---
+// 모든 페이지가 공유하는 공통 뼈대
+import "../styles/global.css";
+import { getAllAbout } from "../lib/content.js";
+
+const { contact } = await getAllAbout();
+
+const { title = "Yerim Gim — musicology", description = "Yerim Gim (김예림) — musicologist working on neurofeedback music, brain–computer music interfaces, and AI music." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="top">
+    <a class="brand" href="/">Yerim Gim <em>·</em> 김예림</a>
+    <nav class="main" aria-label="Main menu">
+      <a href="/#bio">About</a>
+      <a href="/#works">Research</a>
+      <a href="/#writing">Writing</a>
+      <a href="/#cv">CV</a>
+    </nav>
+  </header>
+
+  <slot />
+
+  <footer>
+    <div class="foot-in">
+      <span>© 2026 Yerim Gim · 김예림</span>
+      <span>
+        <a href={`mailto:${contact.email1}`}>{contact.email1}</a>
+        &nbsp;·&nbsp; <a href={`mailto:${contact.email2}`}>gmail</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>

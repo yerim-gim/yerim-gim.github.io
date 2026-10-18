@@ -1,0 +1,138 @@
+/* ──────────────────────────────────────────────
+   전역 스타일 — 색, 폰트, 기본값
+   색을 바꾸고 싶으면 아래 :root 의 값만 고치면 사이트 전체가 바뀌어요.
+─────────────────────────────────────────────── */
+
+:root{
+  --paper:#F3F3F0;
+  --ink:#17171B;
+  --muted:#70707A;
+  --line:#D7D7D0;
+  --accent:#157A45;
+  --accent-ghost:rgba(21,122,69,.08);
+  /* 본문: 영어 Verdana + 한글 고딕 */
+  --serif:Verdana,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+  /* 제목: 본문과 같은 계열이되 굵게 써서 "사각사각"한 느낌 */
+  --display:Verdana,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+  --measure:46rem;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--serif);
+  font-size:1rem;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{background:var(--accent);color:var(--paper)}
+
+a{color:inherit;text-decoration:none}
+a:hover{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+.skip{
+  position:absolute;left:-999px;top:0;background:var(--ink);color:var(--paper);
+  padding:.5rem 1rem;z-index:99;font-family:var(--mono);font-size:.8rem;
+}
+.skip:focus{left:0}
+
+/* ── 상단 내비게이션 ─────────────────────── */
+header.top{
+  position:sticky;top:0;z-index:10;
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:1rem 1.5rem;
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);
+}
+.brand{font-family:var(--mono);font-size:.8rem;letter-spacing:.08em}
+.brand em{font-style:normal;color:var(--accent)}
+nav.main{display:flex;gap:1.4rem;font-family:var(--mono);font-size:.78rem;letter-spacing:.06em}
+nav.main a{color:var(--muted)}
+nav.main a:hover{color:var(--accent)}
+
+/* ── 히어로 ─────────────── */
+.hero{max-width:56rem;margin:0 auto;padding:clamp(4rem,10vh,7rem) 1.5rem 3.5rem;}
+.hero .hello{font-family:var(--mono);font-size:.78rem;color:var(--muted);letter-spacing:.08em;margin-bottom:1.2rem;}
+.hero h1{font-family:var(--display);font-weight:700;font-size:clamp(2.3rem,6vw,3.9rem);line-height:1.12;letter-spacing:-.02em;}
+.hero h1 .latin{color:var(--accent)}
+.hero p.tagline{margin-top:1.5rem;max-width:36rem;color:var(--muted);}
+.staff-wrap{margin-top:3rem}
+.staff-wrap canvas{display:block;width:100%;height:120px}
+
+/* ── 섹션 공통 ───────────────────────────── */
+main{max-width:var(--measure);margin:0 auto;padding:0 1.5rem 6rem}
+section{padding-top:4.5rem}
+.staffmark{width:72px;height:17px;margin-bottom:1rem;background:repeating-linear-gradient(to bottom, var(--line) 0 1px, transparent 1px 4px);}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:.5rem;}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(1.6rem,3.2vw,2.1rem);line-height:1.2;letter-spacing:-.01em;margin-bottom:1.6rem;}
+section p + p{margin-top:1.1rem}
+
+/* ── 소개 ────────────────────────────────── */
+.focus-list{list-style:none;margin-top:1.8rem;display:flex;flex-wrap:wrap;gap:.5rem;}
+.focus-list li{font-family:var(--mono);font-size:.74rem;letter-spacing:.03em;border:1px solid var(--line);border-radius:999px;padding:.35rem .85rem;color:var(--muted);}
+
+/* ── 글 카테고리 + 카드 그리드 ──────────── */
+.cat-title{font-family:var(--mono);font-size:.76rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:2.6rem 0 1.1rem;padding-bottom:.45rem;border-bottom:1px solid var(--line);}
+.cat-title:first-of-type{margin-top:0}
+.card-grid{list-style:none;display:grid;gap:.9rem;grid-template-columns:repeat(4,1fr);}
+.card-grid li{display:flex}
+.card-grid a{display:flex;flex-direction:column;gap:.5rem;width:100%;border:1px solid var(--line);border-radius:4px;padding:1rem .95rem 1.1rem;background:transparent;transition:border-color .15s, background .15s, transform .15s;}
+.card-grid a:hover{border-color:var(--accent);background:var(--accent-ghost);transform:translateY(-2px);}
+.card-grid .date{font-family:var(--mono);font-size:.7rem;color:var(--muted);letter-spacing:.04em}
+.card-grid .t{font-size:.98rem;line-height:1.45;font-weight:700}
+.card-grid .venue{font-family:var(--mono);font-size:.66rem;color:var(--muted);letter-spacing:.03em;margin-top:auto;padding-top:.4rem;}
+@media (max-width:860px){ .card-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:520px){ .card-grid{grid-template-columns:1fr} }
+.card-grid li.is-hidden{display:none}
+.more-btn{display:inline-block;margin:1rem 0 .3rem;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;color:var(--muted);background:none;border:1px solid var(--line);border-radius:3px;padding:.5rem .9rem;cursor:pointer;transition:all .15s;}
+.more-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── 출판물 목록 (Publications) ──────────── */
+.pub-filters{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.4rem;}
+.pub-filters button{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted);background:none;border:1px solid var(--line);border-radius:999px;padding:.35rem .85rem;cursor:pointer;transition:all .15s;}
+.pub-filters button:hover{border-color:var(--accent);color:var(--accent)}
+.pub-filters button.active{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.pub-list{list-style:none}
+.pub-list li{display:grid;grid-template-columns:4rem 1fr auto;gap:1rem;align-items:baseline;padding:1.1rem .2rem;border-bottom:1px solid var(--line);}
+.pub-list li.is-hidden{display:none}
+.pub-list .yr{font-family:var(--mono);font-size:.76rem;color:var(--muted);padding-top:.1rem}
+.pub-list .pt{font-size:1.02rem;line-height:1.5;font-weight:700}
+.pub-list .where{display:block;font-style:italic;color:var(--muted);font-size:.92rem;font-weight:400;margin-top:.2rem;}
+.pub-list .kindtag{display:inline-block;font-family:var(--mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-ghost);background:var(--accent-ghost);border-radius:999px;padding:.1rem .5rem;margin-bottom:.4rem;}
+.pub-list .lnk{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;white-space:nowrap;border:1px solid var(--line);border-radius:3px;padding:.35rem .7rem;color:var(--muted);align-self:center;transition:all .15s;}
+.pub-list .lnk:hover{border-color:var(--accent);color:var(--accent)}
+.pub-list .lnk.soon{opacity:.5;pointer-events:none}
+@media (max-width:620px){ .pub-list li{grid-template-columns:1fr;gap:.35rem} .pub-list .yr{order:-1} .pub-list .lnk{justify-self:start;margin-top:.3rem} }
+
+/* ── CV ─────────────────────────────────── */
+.cv-block{margin-bottom:2.4rem}
+.cv-block h3{font-family:var(--mono);font-size:.74rem;font-weight:500;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:1rem;padding-bottom:.4rem;border-bottom:1px solid var(--line);}
+.cv-item{display:grid;grid-template-columns:8rem 1fr;gap:1rem;padding:.5rem 0;font-size:.97rem;line-height:1.6;}
+.cv-item .yr{font-family:var(--mono);font-size:.74rem;color:var(--muted);padding-top:.15rem}
+.cv-item .what em{font-style:italic;color:var(--muted);font-size:.92rem}
+.cv-item .what .sub{display:block;color:var(--muted);font-size:.88rem}
+.cv-dl{display:inline-block;margin-top:.4rem;font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;border:1px solid var(--ink);padding:.5rem .9rem;border-radius:2px;}
+.cv-dl:hover{background:var(--ink);color:var(--paper)}
+@media (max-width:560px){ .cv-item{grid-template-columns:5rem 1fr} }
+
+/* ── 글 읽기 페이지 ──────────────────────── */
+.essay-page{max-width:40rem;margin:0 auto;padding:3rem 1.5rem 6rem}
+.essay-page .back{font-family:var(--mono);font-size:.76rem;color:var(--muted);display:inline-block;margin-bottom:2rem}
+.essay-page .back:hover{color:var(--accent)}
+.essay-page h1{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,3.5vw,2rem);line-height:1.2;letter-spacing:-.01em;margin-bottom:.8rem}
+.essay-page .meta{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-bottom:2.5rem;letter-spacing:.04em}
+.essay-page .body{font-size:1rem;line-height:1.8}
+.essay-page .body p{margin-bottom:1.15rem}
+
+/* ── 푸터 ────────────────────────────────── */
+footer{border-top:1px solid var(--line);padding:2.5rem 1.5rem 3.5rem;}
+.foot-in{max-width:var(--measure);margin:0 auto;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-family:var(--mono);font-size:.74rem;color:var(--muted);letter-spacing:.05em;}
+.foot-in a:hover{color:var(--accent)}

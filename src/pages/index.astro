@@ -1,0 +1,260 @@
+---
+import Base from "../layouts/Base.astro";
+import { cvPdf } from "../data/content.js";
+import {
+  getAllWritings,
+  getAllPublications,
+  getAllCV,
+  getAllAbout,
+} from "../lib/content.js";
+
+// 노션(또는 예시)에서 모든 내용 가져오기
+const writings = await getAllWritings();
+const publications = await getAllPublications();
+const cv = await getAllCV();
+const { about } = await getAllAbout();
+
+// 글을 카테고리별로 나누기
+const papers = writings.filter((w) => w.category === "paper");
+const essays = writings.filter((w) => w.category === "essay");
+
+// 출판물 유형 목록 (필터 버튼용)
+const kinds = [...new Set(publications.map((p) => p.kind))].filter(Boolean);
+---
+
+<Base>
+  <!-- ── 히어로 ── -->
+  <div class="hero" id="top">
+    <p class="hello">{about.hello}</p>
+    <h1>{about.title_line1}<br /><span class="latin">{about.title_line2}</span></h1>
+    <p class="tagline">{about.tagline}</p>
+    <div class="staff-wrap" aria-hidden="true">
+      <canvas id="staff"></canvas>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ── About ── -->
+    <section id="bio">
+      <div class="staffmark" aria-hidden="true"></div>
+      <p class="eyebrow">소개</p>
+      <h2>About</h2>
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+      <ul class="focus-list">
+        {about.focus.map((f) => <li>{f}</li>)}
+      </ul>
+    </section>
+
+    <!-- ── Research & Publications ── -->
+    <section id="works">
+      <div class="staffmark" aria-hidden="true"></div>
+      <p class="eyebrow">연구</p>
+      <h2>Research &amp; Publications</h2>
+
+      <div class="pub-filters" id="pub-filters">
+        <button class="active" data-kind="all">All</button>
+        {kinds.map((k) => <button data-kind={k}>{k}</button>)}
+      </div>
+
+      <ul class="pub-list" id="pub-list">
+        {publications.map((p) => (
+          <li data-kind={p.kind}>
+            <span class="yr">{p.year}</span>
+            <div>
+              <span class="kindtag">{p.kind}</span>
+              <div class="pt" set:html={p.title}>
+                <span class="where" set:html={p.where}></span>
+              </div>
+            </div>
+            <a
+              class={p.link ? "lnk" : "lnk soon"}
+              href={p.link || "#"}
+              target="_blank"
+              rel="noopener"
+            >Link ↗</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ── Writing ── -->
+    <section id="writing">
+      <div class="staffmark" aria-hidden="true"></div>
+      <p class="eyebrow">글</p>
+      <h2>Writing</h2>
+
+      <h3 class="cat-title">Papers &amp; Criticism · 페이퍼 / 비평문</h3>
+      <ul class="card-grid">
+        {papers.map((w) => (
+          <li>
+            <a href={`/writing/${w.slug}`}>
+              <span class="date">{w.date}</span>
+              <span class="t">{w.title}</span>
+              <span class="venue">{w.venue}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="cat-title">Essays · 음악 에세이</h3>
+      <ul class="card-grid">
+        {essays.map((w) => (
+          <li>
+            <a href={`/writing/${w.slug}`}>
+              <span class="date">{w.date}</span>
+              <span class="t">{w.title}</span>
+              <span class="venue">{w.venue}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ── CV ── -->
+    <section id="cv">
+      <div class="staffmark" aria-hidden="true"></div>
+      <p class="eyebrow">이력</p>
+      <h2>Curriculum Vitae</h2>
+      {cv.map((block) => (
+        <div class="cv-block">
+          <h3>{block.heading}</h3>
+          {block.items.map((it) => (
+            <div class="cv-item">
+              <span class="yr">{it.year}</span>
+              <span class="what">
+                {it.what}
+                {it.sub && <em class="sub">{it.sub}</em>}
+              </span>
+            </div>
+          ))}
+        </div>
+      ))}
+      <a class="cv-dl" href={cvPdf} target="_blank" rel="noopener">Download full CV (PDF) ↓</a>
+    </section>
+  </main>
+
+  <!-- ── 스크립트 ── -->
+  <script>
+    // 히어로: 뇌파 → 파형
+    (function () {
+      const cv = document.getElementById("staff");
+      if (!cv) return;
+      const ctx = cv.getContext("2d");
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let w, h, dpr, t = 0, mouseX = 0.5;
+      function size() {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        w = cv.clientWidth; h = cv.clientHeight;
+        cv.width = w * dpr; cv.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        const top = h * 0.25, gap = (h * 0.5) / 4;
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--line").trim();
+        ctx.lineWidth = 1;
+        for (let i = 0; i < 5; i++) {
+          const y = top + i * gap;
+          ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+        }
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim();
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        const mid = h * 0.5, amp = h * 0.22;
+        for (let x = 0; x <= w; x++) {
+          const p = x / w;
+          const env = Math.sin(Math.PI * p);
+          const f = 3 + mouseX * 4;
+          const clean = Math.sin(p * Math.PI * 2 * f + t) * 0.7 + Math.sin(p * Math.PI * 2 * f * 2.01 + t * 1.4) * 0.3;
+          const eeg = Math.sin(p * 90 + t * 3) * 0.5 + Math.sin(p * 210 + t * 5) * 0.3 + Math.sin(p * 400 + t) * 0.2;
+          const mix = clean * p + eeg * (1 - p);
+          const y = mid + env * amp * mix;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+      function loop() { t += 0.016; draw(); requestAnimationFrame(loop); }
+      addEventListener("resize", () => { size(); if (reduce) draw(); });
+      addEventListener("pointermove", (e) => { mouseX = Math.max(0, Math.min(1, e.clientX / innerWidth)); if (reduce) draw(); });
+      size();
+      reduce ? draw() : loop();
+    })();
+
+    // 출판물 유형 필터 + 더보기
+    (function () {
+      const LIMIT = 4;
+      const list = document.getElementById("pub-list");
+      const filters = document.getElementById("pub-filters");
+      if (!list || !filters) return;
+      const items = Array.from(list.children);
+      let current = "all";
+
+      function apply() {
+        const matched = items.filter((li) => current === "all" || li.dataset.kind === current);
+        items.forEach((li) => (li.style.display = "none"));
+        matched.forEach((li, i) => {
+          li.style.display = i < LIMIT ? "grid" : "none";
+          li.classList.toggle("is-hidden", i >= LIMIT);
+        });
+        updateBtn(matched.length);
+      }
+
+      let moreBtn = null;
+      function updateBtn(total) {
+        if (total > LIMIT) {
+          if (!moreBtn) {
+            moreBtn = document.createElement("button");
+            moreBtn.className = "more-btn";
+            list.after(moreBtn);
+            moreBtn.addEventListener("click", toggleMore);
+          }
+          moreBtn.style.display = "inline-block";
+          if (!expanded) moreBtn.textContent = "＋ 더 보기 (" + (total - LIMIT) + ")";
+        } else if (moreBtn) {
+          moreBtn.style.display = "none";
+        }
+      }
+
+      let expanded = false;
+      function toggleMore() {
+        expanded = !expanded;
+        const matched = items.filter((li) => current === "all" || li.dataset.kind === current);
+        matched.forEach((li, i) => { li.style.display = expanded || i < LIMIT ? "grid" : "none"; });
+        moreBtn.textContent = expanded ? "－ 접기" : "＋ 더 보기 (" + (matched.length - LIMIT) + ")";
+      }
+
+      filters.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        current = btn.dataset.kind;
+        expanded = false;
+        filters.querySelectorAll("button").forEach((b) => b.classList.toggle("active", b === btn));
+        apply();
+      });
+
+      apply();
+    })();
+
+    // Writing 카드 더보기 (카테고리별)
+    (function () {
+      const LIMIT = 4;
+      document.querySelectorAll(".card-grid").forEach((grid) => {
+        const cards = Array.from(grid.children);
+        if (cards.length <= LIMIT) return;
+        const hide = () => cards.forEach((c, i) => c.classList.toggle("is-hidden", i >= LIMIT));
+        hide();
+        const btn = document.createElement("button");
+        btn.className = "more-btn";
+        const rest = cards.length - LIMIT;
+        btn.textContent = "＋ 더 보기 (" + rest + ")";
+        let open = false;
+        btn.addEventListener("click", () => {
+          open = !open;
+          if (open) { cards.forEach((c) => c.classList.remove("is-hidden")); btn.textContent = "－ 접기"; }
+          else { hide(); btn.textContent = "＋ 더 보기 (" + rest + ")"; }
+        });
+        grid.after(btn);
+      });
+    })();
+  </script>
+</Base>

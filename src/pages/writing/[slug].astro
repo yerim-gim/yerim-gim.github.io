@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getAllWritings } from "../../lib/content.js";
+
+// 각 글마다 페이지를 자동 생성 (노션에서 가져옴)
+export async function getStaticPaths() {
+  const writings = await getAllWritings();
+  return writings.map((w) => ({
+    params: { slug: w.slug },
+    props: { writing: w },
+  }));
+}
+
+const { writing } = Astro.props;
+---
+
+<Base title={`${writing.title} — Yerim Gim`}>
+  <article class="essay-page">
+    <a class="back" href="/#writing">← Back to writing</a>
+    <h1>{writing.title}</h1>
+    <p class="meta">{writing.date} · {writing.venue}</p>
+    <div class="body">
+      {writing.body.map((p) => <p>{p}</p>)}
+    </div>
+  </article>
+</Base>
