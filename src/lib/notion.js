@@ -76,7 +76,7 @@ async function queryDatabase(databaseId, filter) {
 
 const PUBLISHED_FILTER = { property: "Published", checkbox: { equals: true } };
 
-// 한 글의 본문(블록들)을 문단 배열로 가져오기
+// 한 글의 본문(블록들)을 "순수 텍스트" 문단 배열로 가져오기 (Settings 용)
 async function getBody(pageId) {
   const paras = [];
   let cursor = undefined;
@@ -94,6 +94,96 @@ async function getBody(pageId) {
     cursor = res.has_more ? res.next_cursor : undefined;
   } while (cursor);
   return paras.length ? paras : ["(본문이 비어 있어요.)"];
+}
+
+// HTML 특수문자 안전 처리
+function esc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+// 노션 색 이름 → CSS 색. 글자색과 배경색(_background) 둘 다 지원.
+const NOTION_COLORS = {
+  gray: "#9b9b9b", brown: "#a3705a", orange: "#d9730d", yellow: "#cb912f",
+  green: "#2f9e44", blue: "#2563c9", purple: "#9065c0", pink: "#c14c8a", red: "#e03e3e",
+};
+const NOTION_BG = {
+  gray_background: "#ebeced", brown_background: "#e9e5e3", orange_background: "#faebdd",
+  yellow_background: "#fbf3db", green_background: "#ddedea", blue_background: "#ddebf1",
+  purple_background: "#eae4f2", pink_background: "#f4dfeb", red_background: "#fbe4e4",
+};
+
+// 노션 rich_text 하나를 HTML로 (볼드/기울임/밑줄/취소선/코드/색/링크)
+function richToHtml(rt) {
+  let html = esc(rt.plain_text);
+  const a = rt.annotations || {};
+  if (a.code) html = `<code>${html}</code>`;
+  if (a.bold) html = `<strong>${html}</strong>`;
+  if (a.italic) html = `<em>${html}</em>`;
+  if (a.underline) html = `<u>${html}</u>`;
+  if (a.strikethrough) html = `<s>${html}</s>`;
+  // 색
+  if (a.color && a.color !== "default") {
+    if (a.color.endsWith("_background")) {
+      const bg = NOTION_BG[a.color];
+      if (bg) html = `<span style="background:${bg};padding:0 .15em;border-radius:3px">${html}</span>`;
+    } else {
+      const c = NOTION_COLORS[a.color];
+      if (c) html = `<span style="color:${c}">${html}</span>`;
+    }
+  }
+  // 링크
+  if (rt.href) html = `<a href="${rt.href}" target="_blank" rel="noopener">${html}</a>`;
+  return html;
+}
+
+function richArr(arr) {
+  return (arr || []).map(richToHtml).join("");
+}
+
+// 한 글의 본문을 "서식이 살아있는 HTML 블록" 배열로 가져오기 (글 읽기용)
+async function getRichBody(pageId) {
+  const out = [];
+  let cursor = undefined;
+  // 목록 항목을 모았다가 묶기 위한 임시 버퍼
+  let listBuf = null; // {tag:'ul'|'ol', items:[]}
+  const flushList = () => {
+    if (listBuf) {
+      out.push(`<${listBuf.tag}>${listBuf.items.map((i) => `<li>${i}</li>`).join("")}</${listBuf.tag}>`);
+      listBuf = null;
+    }
+  };
+  do {
+    const res = await notion.blocks.children.list({ block_id: pageId, start_cursor: cursor });
+    for (const b of res.results) {
+      const t = b.type;
+      if (t === "bulleted_list_item" || t === "numbered_list_item") {
+        const tag = t === "bulleted_list_item" ? "ul" : "ol";
+        if (!listBuf || listBuf.tag !== tag) { flushList(); listBuf = { tag, items: [] }; }
+        listBuf.items.push(richArr(b[t].rich_text));
+        continue;
+      }
+      flushList();
+      if (t === "paragraph") {
+        const h = richArr(b.paragraph.rich_text);
+        if (h.trim()) out.push(`<p>${h}</p>`);
+      } else if (t === "heading_1") {
+        out.push(`<h2>${richArr(b.heading_1.rich_text)}</h2>`);
+      } else if (t === "heading_2") {
+        out.push(`<h3>${richArr(b.heading_2.rich_text)}</h3>`);
+      } else if (t === "heading_3") {
+        out.push(`<h4>${richArr(b.heading_3.rich_text)}</h4>`);
+      } else if (t === "quote") {
+        out.push(`<blockquote>${richArr(b.quote.rich_text)}</blockquote>`);
+      } else if (t === "divider") {
+        out.push(`<hr />`);
+      } else if (t === "code") {
+        out.push(`<pre><code>${esc(b.code.rich_text.map((x) => x.plain_text).join(""))}</code></pre>`);
+      }
+    }
+    cursor = res.has_more ? res.next_cursor : undefined;
+  } while (cursor);
+  flushList();
+  return out.length ? out : ["<p>(본문이 비어 있어요.)</p>"];
 }
 
 function titleOf(p) {
@@ -115,7 +205,8 @@ export async function getWritings() {
       _sort: iso,
       title: titleOf(p),
       venue: plainText(p.Venue) || "",
-      body: await getBody(page.id),
+      body: await getRichBody(page.id),   // 서식 살아있는 HTML 블록 배열
+      bodyIsHtml: true,
     });
   }
   writings.sort((a, b) => (b._sort || "").localeCompare(a._sort || ""));
