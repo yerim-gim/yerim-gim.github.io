@@ -20,7 +20,9 @@ const { writing } = Astro.props;
     <h1>{writing.title}</h1>
     <p class="meta">{writing.date} · {writing.venue}</p>
     <div class="body">
-      {writing.body.map((p) => <p>{p}</p>)}
+      {writing.bodyIsHtml
+        ? writing.body.map((html) => <Fragment set:html={html} />)
+        : writing.body.map((p) => <p>{p}</p>)}
     </div>
   </article>
 </Base>
