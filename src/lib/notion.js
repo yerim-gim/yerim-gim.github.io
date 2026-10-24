@@ -140,6 +140,17 @@ function richArr(arr) {
   return (arr || []).map(richToHtml).join("");
 }
 
+// 블록 전체에 색이 지정된 경우(제목·문단 통째로 색칠) 그 색으로 감싸기
+function wrapBlockColor(html, color) {
+  if (!color || color === "default") return html;
+  if (color.endsWith("_background")) {
+    const bg = NOTION_BG[color];
+    return bg ? `<span style="background:${bg};padding:0 .15em;border-radius:3px">${html}</span>` : html;
+  }
+  const c = NOTION_COLORS[color];
+  return c ? `<span style="color:${c}">${html}</span>` : html;
+}
+
 // 한 글의 본문을 "서식이 살아있는 HTML 블록" 배열로 가져오기 (글 읽기용)
 async function getRichBody(pageId) {
   const out = [];
@@ -159,21 +170,21 @@ async function getRichBody(pageId) {
       if (t === "bulleted_list_item" || t === "numbered_list_item") {
         const tag = t === "bulleted_list_item" ? "ul" : "ol";
         if (!listBuf || listBuf.tag !== tag) { flushList(); listBuf = { tag, items: [] }; }
-        listBuf.items.push(richArr(b[t].rich_text));
+        listBuf.items.push(wrapBlockColor(richArr(b[t].rich_text), b[t].color));
         continue;
       }
       flushList();
       if (t === "paragraph") {
-        const h = richArr(b.paragraph.rich_text);
+        const h = wrapBlockColor(richArr(b.paragraph.rich_text), b.paragraph.color);
         if (h.trim()) out.push(`<p>${h}</p>`);
       } else if (t === "heading_1") {
-        out.push(`<h2>${richArr(b.heading_1.rich_text)}</h2>`);
+        out.push(`<h2>${wrapBlockColor(richArr(b.heading_1.rich_text), b.heading_1.color)}</h2>`);
       } else if (t === "heading_2") {
-        out.push(`<h3>${richArr(b.heading_2.rich_text)}</h3>`);
+        out.push(`<h3>${wrapBlockColor(richArr(b.heading_2.rich_text), b.heading_2.color)}</h3>`);
       } else if (t === "heading_3") {
-        out.push(`<h4>${richArr(b.heading_3.rich_text)}</h4>`);
+        out.push(`<h4>${wrapBlockColor(richArr(b.heading_3.rich_text), b.heading_3.color)}</h4>`);
       } else if (t === "quote") {
-        out.push(`<blockquote>${richArr(b.quote.rich_text)}</blockquote>`);
+        out.push(`<blockquote>${wrapBlockColor(richArr(b.quote.rich_text), b.quote.color)}</blockquote>`);
       } else if (t === "divider") {
         out.push(`<hr />`);
       } else if (t === "code") {
